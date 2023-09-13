@@ -1,0 +1,103 @@
+/* Header.css */
+
+.header {
+  background-color: #f5d4a7;
+  color: white;
+  padding: 0.75rem; 
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-item {
+  font-size: 1.2rem;
+}
+
+.nav-link {
+  color: rgb(14, 13, 13);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo-image {
+  max-height: 30px; 
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.auth-button {
+  background-color: transparent;
+  border: 1px solid rgb(4, 4, 4);
+  color: rgb(0, 0, 0);
+  padding: 0.4rem 0.8rem; 
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0.5rem; 
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem; 
+  }
+
+  .auth-buttons {
+    margin-top: 1rem;
+    align-self: flex-start;
+    flex-direction: column; 
+    gap: 0.5rem;
+  }
+  
+  .auth-button {
+    width: 100%; 
+  }
+  
+  .logo-image {
+    max-height: 25px; 
+  }
+  .login-card {
+    width: 90%;
+    padding: 12px;
+  }
+}
+/* LoginCard.css */
+.login-card {
+  width: 80%;
+  max-width: 400px;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.responsive-heading {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  margin-top: 10px; 
+}
+
+.heading-list {
+  list-style: none;
+  padding: 0;
+}
+
+.heading-list li {
+  margin-top: 20px; 
+}
+
+
