@@ -5,13 +5,13 @@
     align-items: center;
     height: 90vh;
 }
-  
+
 .registration-card {
     width: 90%;
-    max-width: 500px; 
+    max-width: 500px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    padding: 24px; 
+    padding: 24px;
     text-align: center;
 }
 
@@ -19,7 +19,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
-    gap: 5%; 
+    gap: 5%;
 }
 
 
@@ -31,9 +31,10 @@
 
     .input-row {
         flex-direction: column;
-        gap: 10px; 
+        gap: 10px;
     }
 }
+
 /*Change Password*/
 
 .change-password-container {
@@ -43,7 +44,7 @@
     border-radius: 8px;
     padding: 16px;
     text-align: center;
-    margin: 20px auto; 
+    margin: 20px auto;
 }
 
 .password-form {
@@ -69,7 +70,7 @@ input {
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px; 
+    margin-top: 10px;
 }
 
 .change-password-button:hover {
@@ -81,7 +82,7 @@ input {
     margin-top: 10px;
 }
 
-  /* my profile */
+/* my profile */
 
 .profile-container {
     display: flex;
@@ -167,21 +168,24 @@ input {
 .required-star {
     color: red;
 }
+
 .profile-update-button-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-.profile-update-button{
+
+.profile-update-button {
     background: #C77E23;
 
 }
+
 /* ActiveExams.css */
 .dropdown-container {
-   margin-top: 5%;
-    width:20%;
+    margin-top: 5%;
+    width: 20%;
     padding-left: 5%;
-  
+
 }
 
 .dropdown {
@@ -189,69 +193,151 @@ input {
     padding: 10px;
 }
 
-.dataTable{
-    width:40%
+.dataTable {
+    width: 40%
 }
+
 .subject-cards {
     margin-top: 5%;
     padding-left: 5%;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-  }
-  
-  .subject-card {
+}
+
+.subject-card {
     background-color: #f9c3c3;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  /* Elearning.css */
+}
+
+/* Elearning.css */
 .container-dropdown {
     display: flex;
     justify-content: space-around;
-  }
-  
-  .dropdown-column {
-    margin-right: 20px; 
-  }
-  
-  .button-column button {
+}
+
+.dropdown-column {
+    margin-right: 20px;
+}
+
+.button-column button {
     border: none;
     padding: 10px;
     background: #F95502;
     color: white;
     border-radius: 5px;
-    cursor: pointer; 
-  }
-  /* Elearning.css */
+    cursor: pointer;
+}
+
+/* Elearning.css */
 .card-container {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  
-  .card {
-    width: 80%; 
+}
+
+.card {
+    width: 80%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-top: 5%;
-  }
-   /* Dashbord.css */
-   .tabs-container {
+}
+
+/* Dashbord.css */
+.tabs-container {
     font-family: Arial, sans-serif;
     margin-left: 10%;
     margin-top: 3%;
-  }
-  .tabs-tab-list{
+}
+
+.tabs-tab-list {
     display: flex;
     list-style-type: none;
     padding: -0;
-  } 
-  
-  
+}
+
+/* Add this CSS to your existing styles.css or a separate CSS file */
+.content-tab {
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.content-tab.active {
+    background-color: #007bff;
+    /* Blue background for the active tab */
+    color: #fff;
+    /* Text color for the active tab */
+}
+
+
+/* Style for the E-Learning Content and Pre-Courses Details sections */
+.elearning-container {
+    display: flex;
+    flex-direction: row;
+    flex: 0.8;
+}
+
+
+.pre-courses-details {
+    flex: 1.3;
+}
+
+.elearning-content,
+.pre-courses-details {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Style for the content tabs */
+.content-tabs {
+    margin-top: 10px;
+}
+
+.content-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    transition: background-color 0.3s;
+}
+
+.content-tab.active {
+    background-color: #77b8f2;
+    color: #fff;
+}
+
+/* Style for PDF files */
+.pdf-files {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.pdf-card {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* .pdf-card:hover {
+    background-color: #ded7d3;
+    color: #d2cccc;
+} */
+
+.pdf-viewer {
+    margin-top: 20px;
+}
