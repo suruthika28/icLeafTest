@@ -56,12 +56,12 @@
     margin-bottom: 15px;
 }
 
-input {
+/* input {
     padding: 8px;
     width: 95%;
     border: 1px solid #ccc;
     border-radius: 4px;
-}
+} */
 
 .change-password-button {
     background-color: #007bff;
@@ -135,12 +135,8 @@ input {
     display: flex;
     align-items: center;
     margin-bottom: 10px;
+    margin-top: 2%;
 }
-
-.profile-row input[type="checkbox"] {
-    margin-right: 10px;
-}
-
 .profile-label {
     margin: 0;
     color: #777;
@@ -179,6 +175,8 @@ input {
     background: #C77E23;
 
 }
+
+
 
 /* ActiveExams.css */
 .dropdown-container {

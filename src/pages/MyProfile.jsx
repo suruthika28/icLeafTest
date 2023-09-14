@@ -3,18 +3,25 @@ import React from "react";
 import "../styles/styles.css";
 import MainHeader from "../components/MainHeader";
 import MainHeader1 from "../components/MainHeader1";
-
+import { Button, Modal, ModalBody } from "react-bootstrap";
 const MyProfile = () => {
     const userFirstName = localStorage.getItem("fName");
     const userLastName = localStorage.getItem("lName");
     const mobileNumber = localStorage.getItem('phone');
     const emailAddress = localStorage.getItem('email')
-    
+
     const [acceptTerms, setAcceptTerms] = useState(true);
     const [deactivateAccount, setDeactivateAccount] = useState(false);
     const [allowPromotions, setAllowPromotions] = useState(false);
     const [editProfile, setEditProfile] = useState(false);
 
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
     const handleAcceptTermsChange = () => {
         setAcceptTerms(!acceptTerms);
     };
@@ -95,43 +102,45 @@ const MyProfile = () => {
                     </div>
                     <div className="profile-details">
                         <div className="profile-row-label">
-                        <label>
-                                <input
-                                    type="checkbox"
-                                    checked={acceptTerms}
-                                    onChange={handleAcceptTermsChange}
-                                />
-                                I have read and accept Click Here
+                            <input
+                                type="checkbox"
+                                checked={acceptTerms}
+                                onChange={handleAcceptTermsChange}
+                            />
+                            <label>
+                                I have read and accept
                             </label>
+                            &nbsp;
+                            <label style={{ color: 'coral' }} onClick={openModal} >Click Here</label>
                         </div>
                         <div className="profile-row-label">
-                        <label>
-                                <input
-                                    type="checkbox"
-                                    checked={deactivateAccount}
-                                    onChange={handleDeactivateAccountChange}
-                                />
+                            <input
+                                type="checkbox"
+                                checked={deactivateAccount}
+                                onChange={handleDeactivateAccountChange}
+                            />
+                            <label>
                                 I want to de-activate my account and remove my data
                             </label>
                         </div>
                         <div className="profile-row-label">
-                        <label>
-                                <input
-                                    type="checkbox"
-                                    checked={allowPromotions}
-                                    onChange={handleAllowPromotionsChange}
-                                />
+                            <input
+                                type="checkbox"
+                                checked={allowPromotions}
+                                onChange={handleAllowPromotionsChange}
+                            />
+                            <label>
                                 I allow you to process my data for any promotions
                             </label>
                         </div>
                         <div className="profile-row-label">
-                        <label>
-                                <input
-                                    type="checkbox"
-                                    checked={editProfile}
-                                    onChange={handleEditProfileChange}
-                                /> 
-                               I want to edit my profile
+                            <input
+                                type="checkbox"
+                                checked={editProfile}
+                                onChange={handleEditProfileChange}
+                            />
+                            <label>
+                                I want to edit my profile
                             </label>
                         </div>
                     </div>
@@ -145,6 +154,26 @@ const MyProfile = () => {
                             borderRadius: 5
                         }}>Update Consent</button>
                     </div>
+                    <Modal
+                        size='md'
+                        centered
+                        show={modalIsOpen}
+                        onHide={closeModal} // Use onHide to close the modal
+                    >
+                        <Modal.Header closeButton> {/* Add closeButton prop */}
+                            <Modal.Title>Consent Policy</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            By clicking on this checkbox,
+                            you accept the Terms and Conditions,
+                            Privacy Policy and Refund Policy of the platform.
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={closeModal}>
+                                Close
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </div>
             </div>
         </div>
