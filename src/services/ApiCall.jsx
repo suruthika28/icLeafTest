@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseURL = 'http://192.168.2.41:8080/icleaf/rest/loginservice/';
+const baseURL = 'http://localhost:8080/icleaf/rest/loginservice/';
 
 const PostApi = async (method, url, data, headers) => {
     try {

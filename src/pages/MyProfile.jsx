@@ -158,9 +158,9 @@ const MyProfile = () => {
                         size='md'
                         centered
                         show={modalIsOpen}
-                        onHide={closeModal} // Use onHide to close the modal
+                        onHide={closeModal} 
                     >
-                        <Modal.Header closeButton> {/* Add closeButton prop */}
+                        <Modal.Header closeButton> 
                             <Modal.Title>Consent Policy</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>

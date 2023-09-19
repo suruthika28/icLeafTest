@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import MainHeader from "../components/MainHeader";
 import MainHeader1 from "../components/MainHeader1";
 import userService from "../services/userService";
+import PdfModal from "./PdfViewer";
 import "../styles/styles.css";
 import { Typography, Card, CardContent, Divider } from "@mui/material";
-import {
-    Document,
-    Page
-} from "react-pdf"; // Import react-pdf
-import "react-pdf/dist/esm/Page/AnnotationLayer.css"; // Import styles for react-pdf
+import { Document, Page } from "react-pdf";
+import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import ApiCall from "../services/ApiCall";
 import { useNavigate } from "react-router-dom";
+import PptModal from "./PptViewer";
+import QuizModal from "./QuizModal";
 
 function Elearning() {
     const navigate = useNavigate();
@@ -21,8 +21,12 @@ function Elearning() {
     const [selectedTopicId, setSelectedTopicId] = useState("");
     const [elearnContentType, setElearnContentType] = useState("pdf");
     const [pdfFiles, setPdfFiles] = useState([]); // Store PDF file data
-    const [videoFiles,setVideoFiles] = useState([])
+    const [pptFiles, setPptFiles] = useState([]);
+    const [videoFiles, setVideoFiles] = useState([]);
+    const [audioFiles, setAudioFiles] = useState([]);
+    const [quizFiles, setQuizFiles] = useState([]);
     const [pdfIndex, setPdfIndex] = useState(0); // Index of the currently displayed PDF
+    const [pptIndex, setPptIndex] = useState(0);
     const [instructionsVisible, setInstructionsVisible] = useState(true);
     const [elearningContentVisible, setElearningContentVisible] = useState(false);
     const [isPdfContentAvailable, setIsPdfContentAvailable] = useState(false);
@@ -30,10 +34,31 @@ function Elearning() {
     const [isVideoContentAvailable, setIsVideoContentAvailable] = useState(false);
     const [isAudioContentAvailable, setIsAudioContentAvailable] = useState(false);
     const [isMindMapContentAvailable, setIsMindMapContentAvailable] = useState(false);
-    const [isFCardDContentAvailable, setIsFCardContentAvailable] = useState(false);
+    const [isFCardContentAvailable, setIsFCardContentAvailable] = useState(false);
 
     const [activeContentType, setActiveContentType] = useState("pdf"); // Default to "pdf"
-    const [selectedVideoUrl, setSelectedVideoUrl] = useState(""); // State to store selected video URL
+    const [selectedVideoUrl, setSelectedVideoUrl] = useState("");
+
+    const [activeKeywordId, setActiveKeywordId] = useState(null);
+    const [elearnFCardDtos, setElearnFCardDtos] = useState([]);
+    const [isFCardOpen, setIsFCardOpen] = useState(false);
+
+    const [videoVisible, setVideoVisible] = useState(false);
+    const [selectedAudioUrl, setSelectedAudioUrl] = useState("");
+    const [audioPlayerVisible, setAudioPlayerVisible] = useState(false);
+
+    const handleVideoCardClick = (fileUrl) => {
+        setSelectedVideoUrl(fileUrl);
+        setVideoVisible(true);
+    };
+    const handleAudioCardClick = (audioUrl) => {
+        setSelectedAudioUrl(audioUrl);
+        setAudioPlayerVisible(true);
+    };
+
+    const handleBackButtonClick = () => {
+        setVideoVisible(false);
+    };
 
     useEffect(() => {
         getUserPurchaseElearn();
@@ -60,7 +85,7 @@ function Elearning() {
     const handleSubjectSelect = (event) => {
         const selectedSubjectId = event.target.value;
         setSelectedSubjectId(selectedSubjectId);
-        setSelectedTopicId(""); // Clear the selected topic when a new subject is selected
+        setSelectedTopicId("");
 
         const url1 = `gettopiclistforelearn?subjectId=${selectedSubjectId}`;
         ApiCall.PostApi(method, url1, data, headers)
@@ -73,12 +98,12 @@ function Elearning() {
             });
     };
 
-    var formdata = new FormData();
+    const formdata = new FormData();
     formdata.append("subjectId", selectedSubjectId);
     formdata.append("topicId", selectedTopicId);
     formdata.append("elearnContentType", elearnContentType);
     const url2 = "getAllELearnContent";
-    
+
     const getAllELearnContent = () => {
         ApiCall.PostApi(method, url2, formdata, headers)
             .then((response) => {
@@ -88,24 +113,28 @@ function Elearning() {
                     response.data.elearnPdfContentDetailsDtos !== null &&
                     response.data.elearnPdfContentDetailsDtos.length > 0
                 );
-                setPdfIndex(0); // Set the initially displayed PDF to the first one
+                setPdfIndex(0);
+                setPptFiles(response.data.elearnPptContentDetailsDtos || []);
                 setIsPptContentAvailable(
                     response.data.elearnPptContentDetailsDtos !== null &&
                     response.data.elearnPptContentDetailsDtos.length > 0
                 );
+                setAudioFiles(response.data.elearnAudioContentDetailsDtos || []);
                 setIsAudioContentAvailable(
                     response.data.elearnAudioContentDetailsDtos !== null &&
                     response.data.elearnAudioContentDetailsDtos.length > 0
                 );
-                setVideoFiles(response.data.elearnVideoContentDetailsDtos)
+                setVideoFiles(response.data.elearnVideoContentDetailsDtos || []);
                 setIsVideoContentAvailable(
                     response.data.elearnVideoContentDetailsDtos !== null &&
                     response.data.elearnVideoContentDetailsDtos.length > 0
                 );
+                setQuizFiles(response.data.elearnQuizContentDetailsDtos || [])
                 setIsMindMapContentAvailable(
                     response.data.elearnMindMapContentDetailsDtos !== null &&
                     response.data.elearnMindMapContentDetailsDtos.length > 0
                 );
+                setElearnFCardDtos(response.data.elearnFCardDtos || []);
                 setIsFCardContentAvailable(
                     response.data.elearnFCardDtos !== null &&
                     response.data.elearnFCardDtos.length > 0
@@ -125,6 +154,64 @@ function Elearning() {
 
     const handlePdfItemClick = (index) => {
         setPdfIndex(index);
+    };
+    const handlePptItemClick = (index) => {
+        setPptIndex(index);
+    };
+    const openFCard = (fcard) => {
+        setActiveKeywordId(fcard.id);
+        setIsFCardOpen(true);
+    };
+    const [currentPageIndex, setCurrentPageIndex] = useState(0);
+
+    const openPdfModal = (pdfFile, pageIndex) => {
+        setSelectedPdfFile(pdfFile);
+        setCurrentPageIndex(pageIndex);
+        setPdfModalOpen(true);
+    };
+
+    const openPptModal = (pptFile, pageIndex) => {
+        setSelectedPptFile(pptFile);
+        setCurrentPageIndex(pageIndex);
+        setPptModalOpen(true);
+    };
+    const [activeTitleIndex, setActiveTitleIndex] = useState(0);
+
+    const handleSliderArrowClick = (direction) => {
+        if (direction === "next") {
+            setActiveTitleIndex((prevIndex) =>
+                prevIndex < elearnFCardDtos.length - 1 ? prevIndex + 1 : prevIndex
+            );
+        } else if (direction === "prev") {
+            setActiveTitleIndex((prevIndex) =>
+                prevIndex > 0 ? prevIndex - 1 : prevIndex
+            );
+        }
+    };
+
+    const [pdfModalOpen, setPdfModalOpen] = useState(false);
+    const [selectedPdfFile, setSelectedPdfFile] = useState(null);
+
+    const [pptModalOpen, setPptModalOpen] = useState(false);
+    const [selectedPptFile, setSelectedPptFile] = useState(null);
+
+    const closePdfModal = () => {
+        setSelectedPdfFile(null);
+        setPdfModalOpen(false);
+    };
+    const closePptModal = () => {
+        setSelectedPptFile(null);
+        setPptModalOpen(false);
+    };
+    const [selectedQuiz, setSelectedQuiz] = useState(null);
+    const [quizModalOpen, setQuizModalOpen] = useState(false);
+
+    const openQuizModal = () => {
+        setQuizModalOpen(true);
+    };
+
+    const closeQuizModal = () => {
+        setQuizModalOpen(false);
     };
 
     return (
@@ -184,20 +271,20 @@ function Elearning() {
                 <div className="card-container">
                     <div className="card">
                         <h2>Instructions</h2>
-                        <ol style={{ marginTop: '10px', paddingLeft: '20px' }}>
-                            <li style={{ marginBottom: '10px', lineHeight: '1.8', color: 'GrayText' }}>
+                        <ol style={{ marginTop: "10px", paddingLeft: "20px" }}>
+                            <li style={{ marginBottom: "10px", lineHeight: "1.8", color: "GrayText" }}>
                                 Except as permitted by the copyright law applicable to you,
                                 you may not reproduce or communicate any of the content on this website,
                                 including files downloadable from this website,
                                 without the permission of the copyright owner.
                             </li>
-                            <li style={{ marginBottom: '10px', lineHeight: '1.8', color: 'GrayText' }}>
+                            <li style={{ marginBottom: "10px", lineHeight: "1.8", color: "GrayText" }}>
                                 You must not copy, reproduce, republish, upload, post,
                                 transmit or distribute such material in any way,
                                 including by email or other electronic means and
                                 You must not assist any other person to do so.
                             </li>
-                            <li style={{ marginBottom: '10px', lineHeight: '1.8', color: 'GrayText' }}>
+                            <li style={{ marginBottom: "10px", lineHeight: "1.8", color: "GrayText" }}>
                                 Without the prior written consent of the owner,
                                 modification of the materials, use of the materials on any other
                                 website or networked computer environment or use of the
@@ -218,135 +305,294 @@ function Elearning() {
                         <label> - Learning Content</label>
                         <div className="content-tabs">
                             <div
-                                className={`content-tab ${activeContentType === "pdf" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "pdf" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("pdf")}
                             >
-                                PDF Content
+                                PDF Courses Readiness
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "ppt" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "ppt" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("ppt")}
                             >
                                 <Typography variant="inherit">Instructor Tool</Typography>
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "video" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "video" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("video")}
                             >
                                 <Typography variant="inherit">Trainers in Action</Typography>
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "audio" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "audio" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("audio")}
                             >
                                 <Typography variant="inherit">Listen To Trainers</Typography>
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "mindmap" ? "active" : ""
-                                    }`}
-                                onClick={() => setActiveContentType("mindmap")}
+                                className={`content-tab ${activeContentType === "quiz" ? "active" : ""}`}
+                                onClick={() => setActiveContentType("quiz")}
                             >
                                 <Typography variant="inherit">Check Your Readiness</Typography>
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "fcard" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "fcard" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("fcard")}
                             >
                                 <Typography variant="inherit">Know The Key Terms</Typography>
                             </div>
                             <div
-                                className={`content-tab ${activeContentType === "questions" ? "active" : ""
-                                    }`}
+                                className={`content-tab ${activeContentType === "questions" ? "active" : ""}`}
                                 onClick={() => setActiveContentType("questions")}
                             >
-                                <Typography variant="inherit" onClick={()=>navigate('/activeexams')}>Assess Yourself</Typography>
+                                <Typography variant="inherit" onClick={() => navigate('/activeexams')}>Assess Yourself</Typography>
                             </div>
-                            {/* Add tabs for other content types here */}
                         </div>
                     </div>
                     <div className="pre-courses-details">
-                        <Typography variant="h6">Pre-Courses Details</Typography>
-                        {/* Add the content for pre-courses details based on the selected tab */}
                         {activeContentType === "pdf" && (
+
                             <div className="pdf-details">
+                                <Typography variant="h6">Pre-Courses Readiness</Typography>
                                 <div className="pdf-files">
                                     {pdfFiles.map((pdf, index) => (
                                         <Card
                                             key={index}
                                             className="pdf-card"
-                                            onClick={() => handlePdfItemClick(index)}
+                                            onClick={() => openPdfModal(pdf, 0)}
                                         >
-                                            <CardContent>
-                                                <Typography variant="inherit">{pdf.fileName}</Typography>
-                                            </CardContent>
-                                            <Divider />
                                             {pdf.thumbnailImgStr && (
-                                                <img
-                                                    src={pdf.thumbnailImgStr}
-                                                    alt="PDF Preview"
-                                                    style={{ width: "200px", height: "150px" }}
-                                                />
+                                                <div>
+                                                    <img
+                                                        src={pdf.thumbnailImgStr}
+                                                        alt="PDF Preview"
+                                                        style={{ width: "200px", height: "150px" }}
+                                                    />
+                                                    <Divider />
+                                                    <p>{pdf.fileName.split(".")[0]}</p>
+                                                </div>
                                             )}
                                         </Card>
                                     ))}
                                 </div>
-                                {/* Display additional details for PDF content */}
                             </div>
                         )}
-                        {activeContentType === "video" && (
-                            <div className="video-details">
-                                <div className="video-files">
-                                    {/* Map through your video data and display video thumbnails */}
-                                    {isVideoContentAvailable &&
-                                        videoFiles.map((video, index) => (
-                                            <Card
-                                                key={index}
-                                                className="video-card"
-                                                onClick={() => {
-                                                    // Set the selected video URL when a video is clicked
-                                                    setSelectedVideoUrl(video.videoUrl);
-                                                }}
-                                            >
-                                                <CardContent>
-                                                    <Typography variant="inherit">{video.fileName}</Typography>
-                                                </CardContent>
-                                                <Divider />
-                                                {/* Display video thumbnails here */}
-                                                {video.fileUrl && (
+
+                        {pdfModalOpen && selectedPdfFile && (
+                            <PdfModal
+                                open={pdfModalOpen}
+                                handleClose={closePdfModal}
+                                pdfFile={selectedPdfFile}
+                                currentPageIndex={currentPageIndex}
+                                setCurrentPageIndex={setCurrentPageIndex}
+                            />
+                        )}
+
+                        {activeContentType === "ppt" && (
+                            <div className="pdf-details">
+                                <Typography variant="h6">Instructor Tool</Typography>
+                                <div className="pdf-files">
+                                    {pptFiles.map((ppt, index) => (
+                                        <Card
+                                            key={index}
+                                            className="pdf-card"
+                                            onClick={() => openPdfModal(ppt, 0)}
+                                        >
+                                            {ppt.thumbnailImgStr && (
+                                                <div>
                                                     <img
-                                                        src={video.fileUrl}
-                                                        alt="Video Preview"
+                                                        src={ppt.thumbnailImgStr}
+                                                        alt="PDF Preview"
                                                         style={{ width: "200px", height: "150px" }}
                                                     />
-                                                )}
-                                            </Card>
-                                        ))}
+                                                    <Divider />
+                                                    <p>{ppt.fileName.split(".")[0]}</p>
+                                                </div>
+                                            )}
+                                        </Card>
+                                    ))}
                                 </div>
-                                {/* Display the video player when a video URL is available */}
-                                {selectedVideoUrl && (
-                                    <div className="video-player">
-                                        <video controls>
-                                            <source src={selectedVideoUrl} type="video/mp4" />
-                                            Your browser does not support the video tag.
-                                        </video>
+                            </div>
+                        )}
+                        {pptModalOpen && selectedPptFile && (
+                            <PptModal
+                                open={pptModalOpen}
+                                handleClose={closePdfModal}
+                                pdfFile={selectedPdfFile}
+                                currentPageIndex={currentPageIndex}
+                                setCurrentPageIndex={setCurrentPageIndex}
+                            />
+                        )}
+
+
+                        {activeContentType === "video" && (
+                            <div className="video-details">
+                                <Typography variant="h6">Trainer in Action</Typography>
+                                {videoVisible ? (
+                                    <div className="video-container">
+                                        <button
+                                            onClick={handleBackButtonClick}
+                                            style={{
+                                                borderRadius: "5px",
+                                                border: "none",
+                                                padding: "10px",
+                                                background: "#F95502",
+                                                color: "white",
+                                                cursor: "pointer",
+                                                marginTop: '10px',
+                                                marginBottom: "20px",
+                                            }}
+                                        >
+                                            Back
+                                        </button>
+                                        <div className="video-player">
+                                            <video controls width="640" height="360">
+                                                <source src={selectedVideoUrl} type="video/mp4" />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="video-files">
+
+                                        {isVideoContentAvailable &&
+                                            videoFiles.map((video, index) => (
+                                                <Card
+                                                    style={{ backgroundColor: '#004E67' }}
+                                                    key={index}
+                                                    className="video-card"
+                                                    onClick={() => handleVideoCardClick(video.fileUrl)}
+                                                >
+                                                    <div className="video-card-content">
+                                                        <p style={{ color: 'white' }}>{video.fileName.split(".")[0]}</p>
+                                                        <div className="pause-icon">
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 24 24"
+                                                                fill="none"
+                                                                width="55px"
+                                                                height="30px"
+                                                            >
+                                                                <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" fill="white" />
+                                                                <path d="M8 5v14l11-7z" fill="#004E67" />
+                                                            </svg>
+                                                        </div>
+                                                    </div>
+                                                </Card>
+                                            ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {activeContentType === "audio" && (
+                            <div className="audio-details">
+                                <Typography variant="h6">Listen to Trainers</Typography>
+                                {audioFiles.map((audio, index) => (
+                                    <Card
+                                        style={{ backgroundColor: '#004E67' }}
+                                        key={index}
+                                        className="audio-card"
+                                        onClick={() => handleAudioCardClick(audio.fileUrl)}
+                                    >
+                                        <div className="video-card-content">
+                                            <p style={{ color: 'white' }}>{audio.fileName.split(".")[0]}</p>
+                                            <div className="pause-icon">
+                                                <svg
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    width="55px"
+                                                    height="30px"
+                                                >
+                                                    <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2" fill="white" />
+                                                    <path d="M8 5v14l11-7z" fill="#004E67" />
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                ))}
+                                {audioPlayerVisible && (
+                                    <div className="audio-player">
+                                        <audio controls>
+                                            <source src={selectedAudioUrl} type="audio/mpeg" />
+                                            Your browser does not support the audio tag.
+                                        </audio>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {activeContentType === "quiz" && (
+                            <div className="quiz-details">
+                                <Typography variant="h6">Check Your Readiness</Typography>
+                                {quizFiles.map((quiz, index) => (
+                                    <Card
+                                        style={{ backgroundColor: 'white' }}
+                                        key={index}
+                                        className="quiz-card"
+                                        onClick={() => openPdfModal}
+                                    >
+                                        <div className="quiz-card-content">
+                                            <div style={{ display: 'flex', alignItems: 'center', background: '#004E67', borderRadius: '50%', width: '90px', height: '90px', marginTop: '10%' }}>
+                                                <div style={{ color: 'white', fontSize: '70px', fontWeight: 'bold', margin: '0 auto' }}>?</div>
+                                            </div>
+                                            <Divider className="quiz-card-divider" />
+                                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                                <text
+                                                    style={{ cursor: 'pointer' }}
+                                                    onClick={openQuizModal}
+                                                >
+                                                    Check
+                                                </text>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                ))}
+                                {quizModalOpen && (
+                                    <QuizModal
+                                        open={quizModalOpen}
+                                        handleClose={closeQuizModal}
+                                       
+                                    />
+                                )}
+
+                            </div>
+                        )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        {activeContentType === "fcard" && (
+                            <div className="fcard-details">
+                                <div className="slider-arrow prev" onClick={() => handleSliderArrowClick("prev")}>
+                                    &lt;
+                                </div>
+                                <div className="fcard-description-title">
+                                    <div className="title">{elearnFCardDtos[activeTitleIndex].keyword}</div>
+                                </div>
+                                <div className="slider-arrow next" onClick={() => handleSliderArrowClick("next")}>
+                                    &gt;
+                                </div>
+                                {isFCardOpen && activeKeywordId !== null && (
+                                    <div className="fcard-description">
+                                        <div className="fcard-description-content">
+                                            {elearnFCardDtos[activeTitleIndex].description}
+                                        </div>
                                     </div>
                                 )}
                             </div>
                         )}
                     </div>
-                </div>
-            )}
-            {/* PDF Viewer */}
-            {pdfFiles.length > 0 && (
-                <div className="pdf-viewer">
-                    <Document file={pdfFiles[pdfIndex].fileUrl}>
-                        <Page pageNumber={1} />
-                    </Document>
                 </div>
             )}
         </div>

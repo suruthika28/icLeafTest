@@ -23,7 +23,7 @@ const GetAllMyCourses = (token) => {
         headers: { Authorization: `Bearer ${token}` }
     });
     return api
-        .get('getAllMyCourses')
+        .get('getCourseList')
         .then((response) => {
             return response;
         })
