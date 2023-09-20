@@ -1,7 +1,7 @@
 import axios from 'axios';
 // const URL = 'https://courses.icleaf.in/testleaf/rest/loginservice/';
-const URL = 'http://192.168.2.41:8080/icleaf/rest/loginservice/'
-const URL1 = 'http://192.168.2.41:8080/icleaf/rest/loginservice/'
+const URL = 'http://localhost:8080/icleaf/rest/loginservice/'
+const URL1 = 'http://localhost:8080/icleaf/rest/loginservice/'
 const GetUserPurchaseElearn = (token) => {
     const api = axios.create({
         baseURL: URL,
@@ -126,12 +126,15 @@ const ActiveExamEdit = (token, examPackId) => {
         });
 };
 const ActiveExamDetails = (token, examid, exampackid) => {
+    var formdata = new FormData();
+    formdata.append('examid', examid);
+    formdata.append('exampackid', exampackid);
     const api = axios.create({
         baseURL: URL,
         headers: { Authorization: `Bearer ${token}` }
     });
     return api
-        .post('activeexamdetails?examid=' + examid + '&exampackid=' + exampackid)
+        .post('activeexamdetails', formdata)
         .then((response) => {
             return response;
         })

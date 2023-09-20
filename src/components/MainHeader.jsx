@@ -37,7 +37,7 @@ const MainHeader = () => {
                                     <Link to="/activeexams" >Active Exam</Link>
                                 </li>
                                 <li className="submenu-item">
-                                    <Link to="/pack">Review Completed Exams</Link>
+                                    <Link to="/completedReviewExam">Review Completed Exams</Link>
                                 </li>
                             </ul>
                         </li>

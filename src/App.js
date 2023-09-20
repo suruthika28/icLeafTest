@@ -14,6 +14,8 @@ import StartExam from './pages/StartExam';
 import ExamCard from './pages/ExamCard';
 import Elearning from './pages/Elearning';
 import CoursesDashboard from './pages/CoursesDashboard';
+import CompletedReviewExam from './pages/CompletedReviewExam';
+import GetSummary from './pages/GetSummary';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -45,7 +47,11 @@ function App() {
         />
         <Route path="/elearning" element={<Elearning />}
         />
-        <Route path="/dashboard" element={<CoursesDashboard/>}
+        <Route path="/dashboard" element={<CoursesDashboard />}
+        />
+        <Route path="/completedReviewExam" element={<CompletedReviewExam/>}
+        />
+         <Route path="/getSummary" element={<GetSummary/>}
         />
       </Routes>
     </Router>

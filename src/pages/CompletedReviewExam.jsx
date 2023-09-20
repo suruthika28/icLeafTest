@@ -7,8 +7,9 @@ import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import AvailableExams from './AvailableExams';
 import ApiCall from '../services/ApiCall';
+import CompletedExams from './CompletedExams';
 
-function ActiveExams() {
+function CompletedReviewExam() {
     const token = localStorage.getItem("token");
     const [packName, setPackName] = useState('')
     const [selectedItemId, setSelectedItemId] = useState(null);
@@ -21,19 +22,21 @@ function ActiveExams() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        getActiveExamsDto();
+        getCompletedExamSubjects();
+        getServerDateTime();
     }, []);
     const method = "post";
-    const url = "activeexamsDto";
+    const url = "getCompletedReviewExamDetails";
     const dataa = {};
     const headers = {
         Authorization: `Bearer ${token}`
     };
-    const getActiveExamsDto = () => {
+    const getCompletedExamSubjects = () => {
         ApiCall
             .PostApi(method, url, dataa, headers)
             .then((response) => {
-                const subjects = response.data;
+                console.log(response,"resp")
+                const subjects = response.data.obj1;
                 setSubjectNames(subjects);
             })
             .catch((error) => {
@@ -70,6 +73,7 @@ function ActiveExams() {
 
     const handleAvailableExamsClick = (id, name) => {
         setPackName(name)
+        console.log("ddd")
         setSelectedItemId(id);
         setShowAvailableExams(true);
     }
@@ -146,7 +150,7 @@ function ActiveExams() {
                 <>
                     <button
                         style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
-                        onClick={() => handleAvailableExamsClick(item.id, item.name)}>Available Exams</button>
+                        onClick={() => handleAvailableExamsClick(item.id, item.name)}>View Exams</button>
                 </>
             )
         }
@@ -169,10 +173,9 @@ function ActiveExams() {
                     ))}
                 </select>
             </div>
-            <div className='dropdown-container'>
+              <div className='dropdown-container'>
                 <h2>Available Exam Packs</h2>
-            </div>
-            {/* <div style={{ alignContent: 'center', justifyContent: 'center' }}> */}
+            </div> 
             <DataTable
                 className='dataTable'
                 columns={columns}
@@ -184,12 +187,11 @@ function ActiveExams() {
             />
             {showAvailableExams && (
                 <div>
-                    <AvailableExams examPackId={selectedItemId} packName={packName} />
+                    <CompletedExams examPackId={selectedItemId}  />
                 </div>
-            )}
-            {/* </div> */}
+            )} 
         </div>
     );
 }
 
-export default ActiveExams;
+export default CompletedReviewExam;

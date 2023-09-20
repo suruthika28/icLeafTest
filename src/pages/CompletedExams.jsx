@@ -7,7 +7,7 @@ import DataTable from 'react-data-table-component';
 import { useNavigate } from 'react-router-dom';
 import ApiCall from '../services/ApiCall';
 
-function AvailableExams(props) {
+function CompletedExams(props) {
     const { examPackId } = props;
     const { packName } = props;
     const token = localStorage.getItem("token");
@@ -138,31 +138,31 @@ function AvailableExams(props) {
             },
             sortable: true
         },
-        {
-            name: 'Expiry Details',
-            sortable: true,
-            selector: (item) => {
-                var expiryDet = ""
-                if (item.examCategory === 0) {
-                    expiryDet = "No Expiry"
-                }
-                else {
-                    expiryDet = ""
-                }
-                return expiryDet;
-            }
-        },
-        {
-            name: 'Attempt Exam',
-            sortable: true,
-            cell: (item) => (
-                <>
-                    <button
-                        style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
-                        onClick={() => handleStartExam(item.id)}>Start Exam</button>
-                </>
-            )
-        },
+        // {
+        //     name: 'Expiry Details',
+        //     sortable: true,
+        //     selector: (item) => {
+        //         var expiryDet = ""
+        //         if (item.examCategory === 0) {
+        //             expiryDet = "No Expiry"
+        //         }
+        //         else {
+        //             expiryDet = ""
+        //         }
+        //         return expiryDet;
+        //     }
+        // },
+        // {
+        //     name: 'Attempt Exam',
+        //     sortable: true,
+        //     cell: (item) => (
+        //         <>
+        //             <button
+        //                 style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
+        //                 onClick={() => handleStartExam(item.id)}>Start Exam</button>
+        //         </>
+        //     )
+        // },
         {
             name: 'Details',
             sortable: true,
@@ -241,36 +241,7 @@ function AvailableExams(props) {
             sortable: true
         },
         {
-            name: 'Percent',
-            sortable: true,
-            selector: (item) => item.obtainedPercentage + '%'
-        },
-        {
             name: 'Expiry Status',
-            sortable: true,
-            cell: (item) => {
-                if (item.status === 1) {
-                    return (
-                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={navigate('/getSummary')}
-                        >Get Summary</button>
-                    );
-                } else {
-                    if (item.expiredStatus === "true") {
-                        return (
-                            <span style={{ color: 'red' }}
-                            >Resume</span>
-                        );
-                    } else {
-                        return (
-                            <span style={{ color: 'red' }}
-                            >Resume</span>);
-                    }
-                }
-            },
-        },
-
-        {
-            name: 'Action',
             sortable: true,
             cell: (item) => {
                 if (item.status === 1) {
@@ -296,8 +267,6 @@ function AvailableExams(props) {
         <div>
             <div className='dropdown-container'>
                 <h2>Available Exams</h2>
-                <label>Pack Name : {packName}</label>
-                {console.log(packName, "jsvjfsnvjfsnj")}
             </div>
             <div style={{ alignContent: 'center', justifyContent: 'center' }}>
                 <DataTable
@@ -329,4 +298,4 @@ function AvailableExams(props) {
     );
 }
 
-export default AvailableExams;
+export default CompletedExams;
