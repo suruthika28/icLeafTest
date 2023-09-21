@@ -11,6 +11,7 @@ import ApiCall from "../services/ApiCall";
 import { useNavigate } from "react-router-dom";
 import PptModal from "./PptViewer";
 import QuizModal from "./QuizModal";
+import { Modal, ModalBody, Button } from "react-bootstrap";
 
 function Elearning() {
     const navigate = useNavigate();
@@ -145,6 +146,11 @@ function Elearning() {
             });
     };
 
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const hideInstructions = () => {
         setElearnContentType("pdf");
         setInstructionsVisible(false);
@@ -206,9 +212,7 @@ function Elearning() {
     const [selectedQuiz, setSelectedQuiz] = useState(null);
     const [quizModalOpen, setQuizModalOpen] = useState(false);
 
-    const openQuizModal = () => {
-        setQuizModalOpen(true);
-    };
+
 
     const closeQuizModal = () => {
         setQuizModalOpen(false);
@@ -522,6 +526,7 @@ function Elearning() {
                             </div>
                         )}
 
+
                         {activeContentType === "quiz" && (
                             <div className="quiz-details">
                                 <Typography variant="h6">Check Your Readiness</Typography>
@@ -530,7 +535,7 @@ function Elearning() {
                                         style={{ backgroundColor: 'white' }}
                                         key={index}
                                         className="quiz-card"
-                                        onClick={() => openPdfModal}
+                                        onClick={handleShow}
                                     >
                                         <div className="quiz-card-content">
                                             <div style={{ display: 'flex', alignItems: 'center', background: '#004E67', borderRadius: '50%', width: '90px', height: '90px', marginTop: '10%' }}>
@@ -538,33 +543,36 @@ function Elearning() {
                                             </div>
                                             <Divider className="quiz-card-divider" />
                                             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                                                <text
+                                                <Typography
                                                     style={{ cursor: 'pointer' }}
-                                                    onClick={openQuizModal}
+                                                    onClick={handleShow}
                                                 >
                                                     Check
-                                                </text>
+                                                </Typography>
                                             </div>
                                         </div>
                                     </Card>
                                 ))}
-                                {quizModalOpen && (
-                                    <QuizModal
-                                        open={quizModalOpen}
-                                        handleClose={closeQuizModal}
-                                       
-                                    />
-                                )}
 
                             </div>
                         )}
 
-
-
-
-
-
-
+                        <Modal show={show} size="lg" onHide={handleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Sample Modal</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                This is a simple Bootstrap modal in a React app.
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={handleClose}>
+                                    Save Changes
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
 
 
 

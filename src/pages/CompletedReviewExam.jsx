@@ -167,7 +167,7 @@ function CompletedReviewExam() {
                 <select className="dropdown" onChange={handleSubjectSelect}>
                     <option value="">Select a Subject</option>
                     {subjectNames.map((subject) => (
-                        <option key={subject.subjectId} value={subject.subjectId}>
+                        <option key={subject.subjectId} value={subject.subjectId} >
                             {subject.subjectName}
                         </option>
                     ))}

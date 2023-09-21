@@ -172,7 +172,6 @@ function ActiveExams() {
             <div className='dropdown-container'>
                 <h2>Available Exam Packs</h2>
             </div>
-            {/* <div style={{ alignContent: 'center', justifyContent: 'center' }}> */}
             <DataTable
                 className='dataTable'
                 columns={columns}

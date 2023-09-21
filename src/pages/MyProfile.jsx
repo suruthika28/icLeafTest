@@ -159,6 +159,7 @@ const MyProfile = () => {
                         centered
                         show={modalIsOpen}
                         onHide={closeModal} 
+                        className="custom-modal"
                     >
                         <Modal.Header closeButton> 
                             <Modal.Title>Consent Policy</Modal.Title>

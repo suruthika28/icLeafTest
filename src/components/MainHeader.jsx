@@ -21,7 +21,7 @@ const MainHeader = () => {
                             </ul>
                         </li>
                         <li className="menu-item has-submenu">
-                            <span className="submenu-trigger">Buy Courses</span>
+                            <span className="submenu-trigger" onClick={()=>{navigate('/buyCourses')}}>Buy Courses</span>
                         </li>
                         <li className="menu-item has-submenu">
                             <span className="submenu-trigger" onClick={() => { navigate('/user') }}>My Courses</span>

@@ -16,6 +16,8 @@ import Elearning from './pages/Elearning';
 import CoursesDashboard from './pages/CoursesDashboard';
 import CompletedReviewExam from './pages/CompletedReviewExam';
 import GetSummary from './pages/GetSummary';
+import BuyCourses from './pages/BuyCourses';
+import CourseInfo from './pages/CourseInfo';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -49,9 +51,13 @@ function App() {
         />
         <Route path="/dashboard" element={<CoursesDashboard />}
         />
-        <Route path="/completedReviewExam" element={<CompletedReviewExam/>}
+        <Route path="/completedReviewExam" element={<CompletedReviewExam />}
         />
-         <Route path="/getSummary" element={<GetSummary/>}
+        <Route path="/getSummary" element={<GetSummary />}
+        />
+        <Route path="/buyCourses" element={<BuyCourses />}
+        />
+         <Route path="/courseInfo" element={<CourseInfo />}
         />
       </Routes>
     </Router>

@@ -44,7 +44,9 @@ function AvailableExams(props) {
                 alert(error);
             });
     }
-
+ const handleNavigate=()=>{
+    navigate('/getSummary')
+ }
 
 
     const handleStartExam = (id) => {
@@ -251,8 +253,7 @@ function AvailableExams(props) {
             cell: (item) => {
                 if (item.status === 1) {
                     return (
-                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={navigate('/getSummary')}
-                        >Get Summary</button>
+                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={handleNavigate}>Get Summary</button>
                     );
                 } else {
                     if (item.expiredStatus === "true") {

@@ -5,6 +5,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import CloseIcon from "@mui/icons-material/Close";
+import "../styles/Header.css"
 
 const PdfModal = ({ open, handleClose, pdfFile, currentPageIndex, setCurrentPageIndex }) => {
     const [zoomLevel, setZoomLevel] = useState(1);
@@ -79,8 +80,7 @@ const PdfModal = ({ open, handleClose, pdfFile, currentPageIndex, setCurrentPage
                 </div>
                 <Grid container spacing={2} style={{ marginTop: '5px', flex: 1 }}>
                     <Grid item xs={2}>
-                        <div style={{ overflowY: "auto", height: "100%" }}>
-                            <div style={{ paddingRight: "10px" }}>
+                    <div style={{ overflowY: "auto", maxHeight: "900px", height: "fit-content" }} className="custom-scrollbar">                            <div style={{ paddingRight: "10px" }}>
                                 {pageImgUrlList.map((url, index) => (
                                     <div key={index} onClick={() => setCurrentPageIndex(index)}>
                                         <img
@@ -98,6 +98,7 @@ const PdfModal = ({ open, handleClose, pdfFile, currentPageIndex, setCurrentPage
                                 ))}
                             </div>
                         </div>
+
                     </Grid>
 
                     <Grid item xs={9}>

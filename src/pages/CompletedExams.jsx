@@ -70,8 +70,9 @@ function CompletedExams(props) {
     };
 
     const tabledata = data.filter((item) => JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1);
-    const tabledata1 = activeexamdetails.filter((item) => JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1);
-
+    const filteredData = activeexamdetails.filter((item) => {
+        return item.status === 1 && JSON.stringify(item).toLowerCase().indexOf(filterText.toLowerCase()) !== -1;
+      });
     const customStyles = {
         headRow: {
             style: {
@@ -228,14 +229,6 @@ function CompletedExams(props) {
                 if (item.status === 1) {
                     status = "Completed"
                 }
-                else {
-                    if (item.exampack.expiredStatus === "true") {
-                        status = "Not Completed"
-                    }
-                    else {
-                        status = "Not Completed"
-                    }
-                }
                 return status;
             },
             sortable: true
@@ -247,18 +240,20 @@ function CompletedExams(props) {
                 if (item.status === 1) {
                     return (
                         <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
+                        >Get Summary</button>
+                    );
+                }
+            },
+        },
+        {
+            name: 'Review Exam',
+            sortable: true,
+            cell: (item) => {
+                if (item.status === 1) {
+                    return (
+                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
                         >Review Exam</button>
                     );
-                } else {
-                    if (item.expiredStatus === "true") {
-                        return (
-                            <label>Expired</label>
-                        );
-                    } else {
-                        return (
-                            <label>Not Expire</label>
-                        );
-                    }
                 }
             },
         }
@@ -286,7 +281,7 @@ function CompletedExams(props) {
                     </div>
                     <DataTable
                         columns={columns1}
-                        data={tabledata1}
+                        data={filteredData}
                         pagination
                         paginationComponentOptions={paginationComponentOptions}
                         paginationRowsPerPageOptions={[10, 25, 50, 75, 100]}
