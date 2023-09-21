@@ -25,7 +25,7 @@ export const GetApi = async (method, url, params, headers = null) => {
             headers: headers,
         });
         console.log(params,"param")
-        return response.data;
+        return response;
 
     } catch (error) {
         console.error('API Error:', error.message);
