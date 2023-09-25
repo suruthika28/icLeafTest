@@ -2,8 +2,11 @@ import React from 'react'
 import '../styles/styles.css'
 import MainHeader1 from '../components/MainHeader1'
 import MainHeader from '../components/MainHeader'
-import { useNavigate } from 'react-router-dom'
-function GetSummary() {
+import { useLocation, useNavigate } from 'react-router-dom'
+function GetSummary(props) {
+    const location = useLocation();
+    const { examTakenId } = location.state;
+    console.log(examTakenId)
     const navigate = useNavigate();
     const handleBack = () => {
         navigate(-1);

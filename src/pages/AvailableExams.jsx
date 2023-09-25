@@ -28,7 +28,7 @@ function AvailableExams(props) {
 
     const method = "post";
     const url = `activeexamedit?examPackId=${examPackId}`;
-    const dataa={}
+    const dataa = {}
     const headers = {
         Authorization: `Bearer ${token}`
     };
@@ -44,9 +44,9 @@ function AvailableExams(props) {
                 alert(error);
             });
     }
- const handleNavigate=()=>{
-    navigate('/getSummary')
- }
+    const handleNavigate = (id) => {
+        navigate('/getSummary', { state: { examTakenId: id } })
+    }
 
 
     const handleStartExam = (id) => {
@@ -253,7 +253,7 @@ function AvailableExams(props) {
             cell: (item) => {
                 if (item.status === 1) {
                     return (
-                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={handleNavigate}>Get Summary</button>
+                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={handleNavigate(item.id)}>Get Summary</button>
                     );
                 } else {
                     if (item.expiredStatus === "true") {
