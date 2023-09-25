@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { GetApi, PostApi } from '../services/ApiCall';
+import ApiCall from '../services/ApiCall';
 import userService from "../services/userService";
 
 function ELearnDashboard() {
   const token = localStorage.getItem("token");
   const [subjectNames, setSubjectNames] = useState([]);
   const [subject, setSubject] = useState([]);
-  const [elearnDetails, setElearnDetails] = useState([]);
+  const [elearnDetails, setElearnDetails] = useState({});
   const [topicName, setTopicName] = useState([]);
   const [selectedSubjectId, setSelectedSubjectId] = useState('');
   const [selectedTopicId, setSelectedTopicId] = useState('');
@@ -23,7 +23,7 @@ function ELearnDashboard() {
 
   const getElearnDetails = async () => {
     try {
-      const response = await PostApi('POST', url, data, headers);
+      const response = await ApiCall.PostApi('POST', url, data, headers);
       setSubject(response.data);
       console.log(response);
     } catch (error) {
@@ -37,7 +37,7 @@ function ELearnDashboard() {
     setSelectedSubjectId(selectedSubjectId);
     setSelectedTopicId('');
     setTopicName([]);
-  
+
     if (selectedSubjectId) {
       userService
         .Gettopiclistforelearn(token, selectedSubjectId)
@@ -50,11 +50,11 @@ function ELearnDashboard() {
       setTopicName([]);
     }
   };
-  
+
   const handleTopicSelect = async (event) => {
     const selectedTopicId = event.target.value;
     setSelectedTopicId(selectedTopicId);
-    
+
     const url = "userdashelearndetails";
     const headers = {
       Authorization: `Bearer ${token}`
@@ -62,19 +62,28 @@ function ELearnDashboard() {
     const params = {
       subjectId: selectedSubjectId
     };
+
     try {
-      const response = await GetApi('GET', url, params, headers);
-      console.log(response);
+      const response = await ApiCall.GetApi('GET', url, params, headers);
+      console.log("Response : ", response);
       setElearnDetails(response.data);
     } catch (error) {
       console.log(error);
     }
   }
 
-  const elearnDetailsArray = Object.entries(elearnDetails).map(([key, value]) => ({
-    key,
-    value
-  }));
+  const renderNestedObject = (data) => {
+    return (
+      <div className="elearn-details">
+        {Object.entries(data).map(([key, value]) => (
+          <div key={key} className="card card-body shadow-v2 elearn-box">
+            <h3>{key}</h3>
+            {typeof value === "object" ? renderNestedObject(value) : <p>{value}</p>}
+          </div>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -97,12 +106,7 @@ function ELearnDashboard() {
         </select>
       </div>
       <div className="elearn-details">
-        {elearnDetailsArray.map((item, index) => (
-          <div key={index} className="card card-body shadow-v2 elearn-box">
-            <h3>{item.key}</h3>
-            <p>{item.value}</p>
-          </div>
-        ))}
+        {renderNestedObject(elearnDetails)}
       </div>
     </div>
   )
