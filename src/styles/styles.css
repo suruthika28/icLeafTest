@@ -318,30 +318,31 @@
     background-color: #77b8f2;
     color: #fff;
 }
+
 /* scrollbar style */
 .custom-scrollbar {
-    overflow-y: auto; 
-    max-height: 100%; 
-    scrollbar-width: thin; 
-    scrollbar-color: #333 #222; 
-  }
-  
-  /* Track */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 6px; 
-  }
-  
-  /* Handle */
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #333; 
-    border-radius: 3px; 
-  }
-  
-  /* Handle on hover */
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555; 
-  }
-  
+    overflow-y: auto;
+    max-height: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: #333 #222;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 3px;
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .pdf-files {
     display: flex;
     flex-wrap: wrap;
@@ -706,46 +707,51 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 15%;
 }
+
 .course-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px; 
+    gap: 20px;
     padding: 100px;
     transition: transform 0.2s;
-  }
-  .course-card:hover {
-    transform: scale(1.05); 
 }
-  .course-card {
+
+.course-card:hover {
+    transform: scale(1.05);
+}
+
+.course-card {
     border: 1px solid #ccc;
     border-radius: 8px;
     overflow: hidden;
     width: 300px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
-  }
-  
-  .course-image img {
+}
+
+.course-image img {
+
     max-width: 100%;
     height: auto;
-  }
-  
-  .course-details {
+}
+
+.course-details {
     padding: 16px;
-  }
-  
-  .course-details h2 {
+}
+
+.course-details h2 {
     font-size: 1.2rem;
     margin: 0;
-  }
-  
-  .course-details p {
+}
+
+.course-details p {
     font-size: 0.9rem;
     color: #555;
     margin-top: 8px;
-  }
-  .validityInDaysCls {
-    position: absolute;
+}
+
+.validityInDaysCls {
+    /* position: absolute; */
     color: #f95502;
     right: 17px;
     top: 2px;
@@ -755,3 +761,63 @@
     background: #ffffff;
     cursor: default;
 }
+
+/* styles.css */
+.courseinfo-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh;  */
+    padding: 25px;
+}
+
+.courseinfo-card {
+    /* border: 1px solid #ccc; */
+    background-color: #d37474;
+    /* padding: 20px; */
+    /* text-align: center; */
+}
+.courseinfo-card2 {
+    background-color: #433f3f;
+}
+
+/* .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.featuresRowCls {
+    margin-bottom: 30px;
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+.iconMainCls {
+    position: relative;
+}
+.featuresRowCls .tickIconCls {
+    position: absolute;
+    top: -15px;
+    right: -3px;
+    color: white;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+    background: #02cc26;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 8px;
+}
+.featuresRowCls .iconCls {
+    background: #efefef;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 2px;
+    color: #8a8a8a9c;
+} */

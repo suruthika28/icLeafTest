@@ -4,11 +4,29 @@ import MainHeader1 from '../components/MainHeader1';
 import userService from '../services/userService';
 import '../styles/styles.css'
 import ApiCall from '../services/ApiCall';
+import { useNavigate } from 'react-router-dom';
 function CreateUser() {
     const token = localStorage.getItem("token");
     const [subjectNames, setSubjectNames] = useState([]);
+    const navigate = useNavigate();
+    let timeout;
+
+    function startSessionTimeout() {
+        const TIMEOUT_DURATION = 5 * 60 * 1000;
+
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+
+        timeout = setTimeout(() => {
+            // console.log("Session timeout triggered");
+            navigate('/login')
+
+        }, TIMEOUT_DURATION);
+    }
 
     useEffect(() => {
+        startSessionTimeout();
         getUserPurchaseElearn();
     }, []);
     const method = "post";
