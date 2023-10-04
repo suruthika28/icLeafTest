@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { PostApi ,GetApi} from "../services/ApiCall";
+import { GetApi, PostApi } from '../services/ApiCall';
 
 function AssessmentDashboard() {
   const token = localStorage.getItem("token");
@@ -60,7 +60,6 @@ function AssessmentDashboard() {
   const handleExamPackSelect = async (event) => {
     const selectedExamPackId = event.target.value;
     setSelectedExamPackId(selectedExamPackId);
-    //console.log(selectedSubjectId);
 
     const url = "userassessmentdashinit";
     const headers = {
@@ -76,7 +75,7 @@ function AssessmentDashboard() {
     try {
       const response = await GetApi('GET', url, params, headers);
       console.log(response.data);
-      setAssessmentData(response.data);
+      setAssessmentData(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -98,7 +97,7 @@ function AssessmentDashboard() {
     try {
       const response = await GetApi('GET', url, params, headers);
       console.log(response.data);
-      setAssessmentData(response.data);
+      setAssessmentData(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -137,6 +136,7 @@ function AssessmentDashboard() {
           </select>
         )}
       </div>
+      
 
       <div className="elearn-details">
         {assessmentDetailsArray.map((item, index) => (
@@ -146,6 +146,7 @@ function AssessmentDashboard() {
           </div>
         ))}
       </div>
+
     </div>
   )
 }

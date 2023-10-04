@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import PptModal from "./PptViewer";
 import QuizModal from "./QuizModal";
 import { Modal, ModalBody, Button } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Elearning() {
     const navigate = useNavigate();
@@ -21,11 +22,12 @@ function Elearning() {
     const [topicName, setTopicName] = useState([]);
     const [selectedTopicId, setSelectedTopicId] = useState("");
     const [elearnContentType, setElearnContentType] = useState("pdf");
-    const [pdfFiles, setPdfFiles] = useState([]); // Store PDF file data
+    const [pdfFiles, setPdfFiles] = useState([]);
     const [pptFiles, setPptFiles] = useState([]);
     const [videoFiles, setVideoFiles] = useState([]);
     const [audioFiles, setAudioFiles] = useState([]);
     const [quizFiles, setQuizFiles] = useState([]);
+    const [contentType, setContentType] = useState('');
     const [pdfIndex, setPdfIndex] = useState(0); // Index of the currently displayed PDF
     const [pptIndex, setPptIndex] = useState(0);
     const [instructionsVisible, setInstructionsVisible] = useState(true);
@@ -131,6 +133,7 @@ function Elearning() {
                     response.data.elearnVideoContentDetailsDtos.length > 0
                 );
                 setQuizFiles(response.data.elearnQuizContentDetailsDtos || [])
+                setContentType(response.data.elearnQuizContentDetailsDtos.contentType)
                 setIsMindMapContentAvailable(
                     response.data.elearnMindMapContentDetailsDtos !== null &&
                     response.data.elearnMindMapContentDetailsDtos.length > 0
@@ -149,7 +152,17 @@ function Elearning() {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleShow = () => {
+        setShow(true);
+        const url2 = 'getElearnQuiz'
+        const method = 'post'
+        const formdata = new FormData();
+        formdata.append("subjectId", selectedSubjectId);
+        formdata.append("topicId", selectedTopicId);
+        formdata.append("fileName");
+        formdata.append("contentType")
+
+    }
 
     const hideInstructions = () => {
         setElearnContentType("pdf");
@@ -390,7 +403,6 @@ function Elearning() {
                                 setCurrentPageIndex={setCurrentPageIndex}
                             />
                         )}
-
                         {activeContentType === "ppt" && (
                             <div className="pdf-details">
                                 <Typography variant="h6">Instructor Tool</Typography>
@@ -557,7 +569,7 @@ function Elearning() {
                             </div>
                         )}
 
-                        <Modal show={show} size="lg" onHide={handleClose}>
+                        {/* <Modal show={show} onHide={handleClose}>
                             <Modal.Header closeButton>
                                 <Modal.Title>Sample Modal</Modal.Title>
                             </Modal.Header>
@@ -572,14 +584,17 @@ function Elearning() {
                                     Save Changes
                                 </Button>
                             </Modal.Footer>
+                        </Modal> */}
+                        <Modal show={show} size="lg" centered animation onHide={handleClose}>
+                            <Modal.Header>
+                                <Modal.Title style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+                                    <button type="button" className="btn-close" style={{ fontSize: '14px' }} onClick={handleClose}></button>
+                                </Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Button>Score</Button>
+                            </Modal.Body>
                         </Modal>
-
-
-
-
-
-
-
                         {activeContentType === "fcard" && (
                             <div className="fcard-details">
                                 <div className="slider-arrow prev" onClick={() => handleSliderArrowClick("prev")}>

@@ -53,17 +53,28 @@ function AvailableExams(props) {
         navigate('/startexam', { state: { examId: id, examPackId: examPackId } })
     }
     const showExamHistory = (id, examName) => {
-        setShowActiveExamDetails(true)
+        const url1 = "activeexamdetails";
+        const formdata = new FormData();
+        formdata.append("examid", id);
+        formdata.append("exampackid", examPackId);
         setExamName(examName)
-        userService
-            .ActiveExamDetails(token, id, examPackId)
+        // userService
+        //     .ActiveExamDetails(token, id, examPackId)
+        //     .then((response) => {
+        //         console.log(response, "activeExamDetails")
+        //         setActiveExamDetails(response.data)
+        //     })
+        //     .catch((error) => {
+        //         alert(error);
+        //     })
+            setShowActiveExamDetails(true)
+            ApiCall
+            .PostApi(method, url1, formdata, headers)
             .then((response) => {
-                console.log(response, "activeExamDetails")
-                setActiveExamDetails(response.data)
+                console.log("Active Exam Details", response)
+                setActiveExamDetails(response.data);
             })
-            .catch((error) => {
-                alert(error);
-            })
+
     }
 
     const paginationComponentOptions = {
@@ -172,7 +183,7 @@ function AvailableExams(props) {
                 item.examTaken === false ? (
                     <span>Yet to be taken</span>
                 ) : (
-                    <button
+                    <button type='button'
                         style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }}
                         onClick={() => showExamHistory(item.id, item.examName)}>Exam History</button>
                 )
@@ -253,7 +264,7 @@ function AvailableExams(props) {
             cell: (item) => {
                 if (item.status === 1) {
                     return (
-                        <button style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={handleNavigate(item.id)}>Get Summary</button>
+                        <button type='button' style={{ borderRadius: 5, border: 'none', padding: '10px', background: '#F95502', color: 'white' }} onClick={()=>handleNavigate(item.id)}>Get Summary</button>
                     );
                 } else {
                     if (item.expiredStatus === "true") {

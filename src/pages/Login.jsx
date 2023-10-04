@@ -55,7 +55,7 @@ function Login() {
             >
                 <div className='login-card'>
                     <h2 style={{ fontWeight: 'bold', color: '#C77E23' }}>Hi, Welcome</h2>
-                    <h4 style={{ color: 'gray' }}>Enter your credentials to continue</h4>
+                    <h5 style={{ color: 'gray' }}>Enter your credentials to continue</h5>
                     <h3>Login</h3>
                     <form onSubmit={handleLogin}>
                         <input
@@ -65,7 +65,7 @@ function Login() {
                             onChange={(e) => setUserName(e.target.value)}
                             style={{
                                 width: '95%',
-                                height: '30px',
+                                // height: '30px',
                                 marginBottom: '16px',
                                 padding: '8px',
                                 borderRadius: 5,
@@ -78,7 +78,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                             style={{
                                 width: '95%',
-                                height: '30px',
+                                // height: '30px',
                                 padding: '8px',
                                 borderRadius: 5,
                             }}
